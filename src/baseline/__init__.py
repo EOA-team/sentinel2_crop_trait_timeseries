@@ -1,0 +1,1 @@
+__doc__ = 'baseline (sigmoid) function fit to crop trait observations from satellites'

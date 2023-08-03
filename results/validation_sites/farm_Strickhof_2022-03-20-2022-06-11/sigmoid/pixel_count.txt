@@ -1,0 +1,3 @@
+Failed pixels: 102 (12.64%)
+Succeded pixels: 705 (87.36%)
+Total Pixels: 807

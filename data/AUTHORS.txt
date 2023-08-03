@@ -1,0 +1,26 @@
+The data is the result of the joined effort by many people:
+
+Crop Science ETH Zurich
+-----------------------
+
+	Finn Timcke, Field work
+	Dea Spiess, Field work
+	Jania Mackenthun, Field work and Data Processing
+	Rike Teuber, Field work
+    Karia Kögler, Field work
+    Vilma Rantanen, Field work
+	Norbert Kirchgessner, Data processing
+
+Agroscope Reckenholz
+--------------------
+
+	Katharina Casada, Lab work
+	Hansulrich Zbinde, Lab work
+	Matthias Hatt, Lab work
+    Michael Simmler, on-site support
+	
+School of Agircultural, Forest and Food Sciences, HAFL
+------------------------------------------------------
+
+	Bernhard Streit, on-site support
+	Bérénice Goin, Field work

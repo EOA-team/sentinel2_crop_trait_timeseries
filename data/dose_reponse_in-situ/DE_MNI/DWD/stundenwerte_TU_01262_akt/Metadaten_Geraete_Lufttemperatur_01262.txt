@@ -1,0 +1,5 @@
+Stations_ID;Stationsname;Geo. Laenge [Grad];Geo. Breite [Grad];Stationshoehe [m];Geberhoehe ueber Grund [m];Von_Datum;Bis_Datum;Geraetetyp Name;Messverfahren;eor;
+1262;München-Flughafen;11.8;48.36;443;2;19920517;20020516;PT 100 (Luft);Temperaturmessung, elektr.;eor;
+1262;München-Flughafen;11.81;48.36;443.6;2;20020517;20110920;PT 100 (Luft);Temperaturmessung, elektr.;eor;
+1262;München-Flughafen;11.81;48.35;445.5;2;20110921;20230326;PT 100 (Luft);Temperaturmessung, elektr.;eor;
+generiert: 27.03.2023 --  Deutscher Wetterdienst  --

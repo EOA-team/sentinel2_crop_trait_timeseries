@@ -1,0 +1,6 @@
+Stations_ID;Stationsname;Von_Datum;Bis_Datum
+  1262;München-Flughafen;19920517;
+
+Stations_ID;Betreibername;Von_Datum;Bis_Datum
+  1262;DWD;19920517;
+generiert: 27.03.2023 --  Deutscher Wetterdienst  --
