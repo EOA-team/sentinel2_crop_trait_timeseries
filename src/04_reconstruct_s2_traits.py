@@ -109,7 +109,10 @@ def plot_interpolated_lai(
     return f
 
 
-def prepare_lai_ts(lai_pixel_ts: pd.Series) -> pd.Series:
+def prepare_lai_ts(
+        lai_pixel_ts: pd.Series,
+        percentage_datapoints_to_remove: float = 0.1
+) -> pd.Series:
     """
     Prepare LAI time series for the temperature response function.
 
@@ -117,11 +120,20 @@ def prepare_lai_ts(lai_pixel_ts: pd.Series) -> pd.Series:
     ----------
     lai_pixel_ts : pd.Series
         LAI time series.
+    percentage_datapoints_to_remove : float, optional
+        Percentage of data points to remove. Default is 0.1.
     return : pd.Series
         Prepared LAI time series.
     """
     lai_pixel_ts.sort_values(by='time', inplace=True)
     lai_pixel_ts.index = [x for x in range(len(lai_pixel_ts))]
+
+    # randomly remove x percent of the data
+    indices_to_remove = np.random.choice(
+        lai_pixel_ts.index,
+        int(len(lai_pixel_ts) * percentage_datapoints_to_remove),
+        replace=False)
+    lai_pixel_ts.loc[indices_to_remove, 'lai'] = np.nan
 
     # apply a simple outlier filtering
     # values smaller than one standard deviation are removed
@@ -154,6 +166,20 @@ def interpolate_between_assimilated_points(
 ) -> pd.DataFrame:
     """
     Interpolate assimilated LAI values between satellite observations.
+
+    Parameters
+    ----------
+    measurement_index : List[int]
+        List of measurement indices.
+    meteo_pixel : pd.DataFrame
+        Meteo data.
+    response : Response
+        Response object.
+
+    Returns
+    -------
+    pd.DataFrame
+        Interpolated LAI values.
     """
     model_sims_between_points = []
     # loop over measurement points
@@ -230,8 +256,9 @@ def apply_temperature_response(
         dose_response_parameters: Path,
         response_curve_type,
         covariate_granularity,
-        n_sim=50,
-        n_plots=20
+        percentage_datapoints_to_remove: float = 0.1,
+        n_sim: int = 50,
+        n_plots: int = 20
 ) -> None:
     """
     Apply the temperature response function to the LAI time series.
@@ -246,10 +273,13 @@ def apply_temperature_response(
         Type of the response curve.
     covariate_granularity : str
         Granularity of the covariate.
-    n_sim : int
+    percentage_datapoints_to_remove : float, optional
+        Percentage of data points to remove. Default is 0.1.
+    n_sim : int, optional
         Number of simulations for the ensemble Kalman filter.
-    n_plots : int
-        Number of plots to generate (random selection)
+        Default is 50.
+    n_plots : int, optional
+        Number of plots to generate (random selection). Default is 20.
     """
     # read in dose response paramters
     path_paramters = Path.joinpath(
@@ -387,7 +417,10 @@ def apply_temperature_response(
 
             plot_pixel = pixel_coords in pixel_coords_to_plot
 
-            lai_pixel_ts = prepare_lai_ts(lai_pixel_ts)
+            lai_pixel_ts = prepare_lai_ts(
+                lai_pixel_ts=lai_pixel_ts,
+                percentage_datapoints_to_remove=percentage_datapoints_to_remove
+            )
             # special case: if we only have a single measurement
             # we cannot interpolate between the assimilated points.
             if len(lai_pixel_ts) == 1:
@@ -591,10 +624,15 @@ if __name__ == '__main__':
 
         covariate_granularities = ['daily', 'hourly']
 
+        # percentage of data points to be removed
+        percentage_datapoints_to_remove = 0.1
+
         for response_curve_type in response_curve_types:
             for covariate_granularity in covariate_granularities:
                 apply_temperature_response(
                     parcel_lai_dir=parcel_lai_dir,
                     dose_response_parameters=dose_response_parameters,
                     response_curve_type=response_curve_type,
-                    covariate_granularity=covariate_granularity)
+                    covariate_granularity=covariate_granularity,
+                    percentage_datapoints_to_remove=percentage_datapoints_to_remove,  # noqa E501
+                )
